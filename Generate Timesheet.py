@@ -36,13 +36,3 @@ for date in dates:
 # Create a DataFrame
 timesheet = pd.DataFrame(data, columns=['Activity Name','Activity Category','Resource Name', 'Date of log', 'Time logged'])
 
-#timesheet.to_csv('activity_log.csv')
-print(timesheet)
-API_KEY='$2a$10$5bkoLVv3gkrg7Q.Mg4EnAej5S7NXOrnJ2ajOwI.cvECMHvTzxl4iu'
-os.environ['PANDASAI_API_KEY']=API_KEY
-timesheet_=SmartDataframe(timesheet)
-
-
-agent=Agent(timesheet_)
-agent.chat('Number of total hours logged')
-
