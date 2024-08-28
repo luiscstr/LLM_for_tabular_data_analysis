@@ -1,26 +1,25 @@
-from pandasai.llm.local_llm import LocalLLM
-import psutil
-import streamlit as st
-import pandas as pd
-from pandasai import SmartDataframe, Agent
+import gradio as gr
+from sqlchain import agent_executor
 
-model= LocalLLM(api_base="http://localhost:11434/v1", model="llama3-chatqa:8b")
-#"llama3-chatqa:8b-v1.5" Doesnt seem to work well with pandasai
-st.title("Data analysis with PandasAI")
-uploaded_file=st.file_uploader("Upload a CSV file",type=['csv'])
-
-if uploaded_file is not None:
-    data=pd.read_csv(uploaded_file)
-    st.write(data.head(5))
-    #agent=Agent(data, config={"llm": model,"enable_cache": False})
-    df=SmartDataframe(data,config={"llm":model,"enable_cache": False})
-    prompt=st.text_area("Enter your  prompt:")
-
-    if st.button("Generate:"):
-        if prompt:
-            with st.spinner("Generating response..."):
-                st.write(df.chat(prompt))
-                #st.write(agent.chat(prompt))
+def ask_bot(text):
+    output=agent_executor.invoke(text)
+    return output
 
 
+def main():
+    with gr.Blocks() as querydb:
+        gr.Markdown("Langchain SQL Agent App")
+        name=gr.Textbox(
+            lines=1,
+            placeholder="Ask your question here...",
+            label="Ask your question here...",
+            )
+        output=gr.Textbox(label="Answer",lines=4)
+        greet_btn=gr.Button(label='Ask Model')
 
+        greet_btn.click(ask_bot,input=[name],output=[output])
+    
+    querydb.launch()
+
+if __name__=="__main__":
+    main()
