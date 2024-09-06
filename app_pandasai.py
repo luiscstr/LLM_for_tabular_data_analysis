@@ -3,8 +3,23 @@ import psutil
 import streamlit as st
 import pandas as pd
 from pandasai import SmartDataframe, Agent
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv
 
-model= LocalLLM(api_base="http://localhost:11434/v1", model="llama3-chatqa:8b")
+
+load_dotenv()
+#model= LocalLLM(api_base="http://localhost:11434/v1", model="llama3-chatqa:8b")
+
+model = ChatGroq(
+        model="llama-3.1-70b-versatile",
+        temperature=0,
+        max_tokens=None,
+        timeout=None,
+        max_retries=5,
+        # other params...
+        )
+
+
 #"llama3-chatqa:8b-v1.5" Doesnt seem to work well with pandasai
 st.title("Data analysis with PandasAI")
 uploaded_file=st.file_uploader("Upload a CSV file",type=['csv'])
