@@ -38,7 +38,8 @@ def main():
         output_table = gr.DataFrame(label="Preview of the Data")
    
         #Process (can be submitted with enter or with click button)
-        file_input.upload(fn=load_and_save_file,inputs=[file_input],outputs=[output_message,output_table])
+        file_input.upload(fn=load_and_save_file,inputs=[file_input],outputs=[output_message,
+                                                                             output_table])
     
         output=input_text.submit(fn=ChatBot.respond,
                                  inputs=[chatbot,input_text],
